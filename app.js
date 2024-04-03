@@ -1,6 +1,9 @@
 let time = document.querySelector(".time");
 let play = document.querySelector(".play");
 let stop = document.querySelector(".stop");
+let stopwatch = document.getElementById("stopwatch");
+let timer = document.getElementById("timer");
+let settings = document.querySelector(".settings");
 
 let condition = false;
 let second = 0;
@@ -8,10 +11,24 @@ let minute = 0;
 let hour = 0;
 let pusk; // otchet vremeni
 
+timer.addEventListener("click", () => {
+  settings.style.display = "block";
+  timer.classList.replace("noActive", "active");
+  stopwatch.classList.replace("active", "noActive");
+  stopPlay();
+});
+
+stopwatch.addEventListener("click", () => {
+  settings.style.display = "none";
+  timer.classList.replace("active", "noActive");
+  stopwatch.classList.replace("noActive", "active");
+});
+
 function formatTime(value) {
   return value < 10 ? "0" + value : value;
-}
-play.addEventListener("click", () => {
+};
+
+function startPlay() {
   if (!condition) {
     play.style.backgroundImage = "url(img/pause.svg)";
     condition = true;
@@ -36,9 +53,9 @@ play.addEventListener("click", () => {
     condition = false;
     clearInterval(pusk);
   }
-});
+};
 
-stop.addEventListener("click", function () {
+function stopPlay() {
   minute = 0;
   second = 0;
   hour = 0;
@@ -48,4 +65,8 @@ stop.addEventListener("click", function () {
   time.innerHTML = `${formatTime(hour)}:${formatTime(minute)}:${formatTime(
     second
   )}`;
-});
+};
+
+play.addEventListener("click", startPlay);
+
+stop.addEventListener("click", stopPlay);
